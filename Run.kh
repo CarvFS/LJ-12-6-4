@@ -1,0 +1,30 @@
+#!/bin/sh 
+
+closure="kh"
+cat > $closure.inp <<EOF
+&PARAMETERS
+outlist='uxghcbtensq', THEORY='DRISM', closure='${closure^^}',
+exchem_SC=1, exchem_SM=1
+extra_precision=0
+entropicDecomp=0
+!grid
+NR=16384, DR=0.025, rout=100, kout=30.,
+!MDIIS
+mdiis_nvec=30, mdiis_del=0.3, tolerance=5.e-12,
+!iter
+ksave=-1, progress=1, maxstep=10000,
+!ElStat
+SMEAR=1, ADBCOR=0.5,
+!bulk solvent properties
+temperature=298, DIEps=78.497,
+NSP=1
+/
+&SPECIES
+!corresponds very closely to 0.0333 1/A3
+ndens=2
+DENSITY=55.296d0,0.d0
+MODEL="spce-ion.mdl"
+/
+EOF
+
+$AMBERHOME/bin/rism1d $closure > $closure.out
