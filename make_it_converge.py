@@ -87,13 +87,13 @@ for i in ions:
     # clean files kh.*, pse2.*, pse3.*
     os.system('rm kh.* pse2.* pse3.*')
 
-    closure_list = ['kh','pse2','pse3']
+    closure_list = ['kh','pse2']
     for indx,c in enumerate(closure_list):
         
         if indx == 0:
-            D = [40.00,50.00,55.26]
+            D = [40.00,50.00,55.26] #define densities for kh
         else:
-            D = [55.26]
+            D = [55.26] #define densities for pse2, etc...
         
         #D=[40.00,50.00,55.26]
         
@@ -103,7 +103,7 @@ for i in ions:
             f = open("Run.mir.%s" % c, "w+")
             f.write("#!/bin/sh \n")
             f.write("\n")
-            if indx>0:
+            if indx>0: #add line below while using pse2,...
                 f.write("prev_closure=\"%s\" \n" % closure_list[indx-1])
             f.write("closure=\"%s\" \n" % c)
             f.write("cat > $closure.inp << EOF \n")
@@ -131,7 +131,7 @@ for i in ions:
             f.write("/ \n")
             f.write("EOF\n")
             f.write("\n")
-            if indx>0:
+            if indx>0: #add line below while using pse2,...
                 f.write("cp $prev_closure.sav $closure.sav \n")
             f.write("$AMBERHOME/bin/rism1d $closure")
             f.close()
